@@ -20,7 +20,7 @@
 
 	<license>MIT</license>
 
-	<js-module name="F2B" src="www/F2Blugin.js">
+	<js-module name="F2B" src="www/F2BPlugin.js">
 		<clobbers target="cordova.plugins.F2B"/>
 	</js-module>
 
