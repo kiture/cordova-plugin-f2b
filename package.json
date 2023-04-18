@@ -1,0 +1,21 @@
+{
+	"name": "cordova-plugin-f2b",
+	"version": "1.0.0",
+	"description": "F2B plugin for cordova",
+	"cordova": {
+		"id": "cordova-plugin-f2b",
+		"platforms": [
+			"ios"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kiture/cordova-plugin-f2b"
+	},
+	"keywords": [
+		"cordova",
+		"ecosystem:cordova",
+		"cordova-ios"
+	],
+	"author": "Mateusz Borysewicz"
+}

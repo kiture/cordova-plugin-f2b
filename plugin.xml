@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	id="cordova-plugin-f2b"
+	version="1.0.0"
+>
+	<engines>
+        <engine name="cordova" version=">=6.0.0" />
+    </engines>
+
+	<name>F2B</name>
+
+	<description>F2B plugin for Cordova</description>
+
+	<author>Mateusz Borysewicz</author>
+
+	<keywords>cordova</keywords>
+
+	<license>MIT</license>
+
+	<js-module name="F2B" src="www/F2Blugin.js">
+		<clobbers target="cordova.plugins.F2B"/>
+	</js-module>
+
+	<!-- <platform name="android">
+		<source-file src="src/android/F2B.java" target-dir="src/com/myf2b/f2b"/>
+
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="F2B">
+				<param name="android-package" value="com.myf2b.F2B"/>
+			</feature>
+		</config-file>
+	</platform> -->
+	
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+			<feature name="F2B">
+				<param name="ios-package" value="F2B"/>
+			</feature>
+		</config-file>
+
+		<header-file src="src/ios/F2B.h"/>
+		<source-file src="src/ios/F2B.m"/>
+	</platform>
+</plugin>
