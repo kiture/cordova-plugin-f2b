@@ -7,8 +7,27 @@
 #import <mach/mach.h>
 #import "F2B.h"
 #import <Cordova/CDVPluginResult.h>
+#import "GCDWebServer.h"
+#import "GCDWebServerDataResponse.h"
 
 @implementation F2B
+
+- (void)startServer: (CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult* pluginResult =  NULL;
+    NSString* path = [command.arguments objectAtIndex:0];
+
+    GCDWebServer* _webServer = [[GCDWebServer alloc] init];
+
+    [_webServer addGETHandlerForBasePath:@"/" directoryPath:path indexFilename:@"index" cacheAge:3600 allowRangeRequests:YES];
+    [_webServer startWithPort:8080 bonjourName:nil];
+
+    NSString *url = [NSString stringWithFormat:@"%@", _webServer.serverURL];
+
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: path];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 
 - (void)download: (CDVInvokedUrlCommand *)command
 {

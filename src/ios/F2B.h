@@ -15,4 +15,6 @@
 
 - (void)download:(CDVInvokedUrlCommand*)command;
 
+- (void)startServer:(CDVInvokedUrlCommand*)command;
+
 @end
