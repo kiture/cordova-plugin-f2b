@@ -9,6 +9,7 @@
 
 #endif /* F2B_h */
 #import <Cordova/CDVPlugin.h>
+#import "GCDWebServer.h"
 
 @interface F2B : CDVPlugin
 
