@@ -35,6 +35,18 @@
 	</platform> -->
 	
 	<platform name="ios">
+		<framework src="libz.tbd" />
+		<framework src="libxml2.tbd" />
+
+		<podspec>
+			<config>
+				<source url="https://github.com/CocoaPods/Specs.git"/>
+			</config>
+			<pods use-frameworks="true">
+				<pod name="GCDWebServer" spec="~> 3.5.2"/>
+			</pods>
+		</podspec>
+
 		<config-file target="config.xml" parent="/*">
 			<feature name="F2B">
 				<param name="ios-package" value="F2B"/>
