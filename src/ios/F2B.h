@@ -17,4 +17,6 @@
 
 - (void)startServer:(CDVInvokedUrlCommand*)command;
 
+- (void)isAccessibility:(CDVInvokedUrlCommand*)command;
+
 @end
