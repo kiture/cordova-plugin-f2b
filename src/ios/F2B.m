@@ -12,6 +12,13 @@
 
 @implementation F2B
 
+- (void)isAccessibility: (CDVInvokedUrlCommand *)command
+{
+    BOOL accessibilityOn = UIAccessibilityIsVoiceOverRunning();
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool: accessibilityOn];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)startServer: (CDVInvokedUrlCommand *)command
 {
     CDVPluginResult* pluginResult =  NULL;
