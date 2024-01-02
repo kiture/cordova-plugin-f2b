@@ -11,4 +11,8 @@ F2B.startServer = function (success, fail, path) {
   exec(success, fail, "F2B", "startServer", [path]);
 } 
 
+F2B.isAccessibility = function (success, fail) {
+  exec(success, fail, "F2B", "isAccessibility", []);
+}
+
 module.exports = F2B;
