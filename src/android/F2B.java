@@ -7,6 +7,7 @@ import org.json.JSONException;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.view.accessibility.AccessibilityManager;
 
 public class F2B extends CordovaPlugin {
 
@@ -21,8 +22,9 @@ public class F2B extends CordovaPlugin {
 		return true;
 	}
 
-	private Boolean isAccessibility() {		
-		return false;
+	private int isAccessibility() {		
+		AccessibilityManager manager = (AccessibilityManager) cordova.getActivity().getSystemService(Context.ACCESSIBILITY_SERVICE);
+		return manager.isEnabled() ? 1 : 0;
 	}
 
 
