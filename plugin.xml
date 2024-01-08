@@ -24,15 +24,15 @@
 		<clobbers target="cordova.plugins.F2B"/>
 	</js-module>
 
-	<!-- <platform name="android">
-		<source-file src="src/android/F2B.java" target-dir="src/com/myf2b/f2b"/>
+	<platform name="android">
+		<source-file src="src/android/F2B.java" target-dir="src/com/myf2b"/>
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="F2B">
 				<param name="android-package" value="com.myf2b.F2B"/>
 			</feature>
 		</config-file>
-	</platform> -->
+	</platform>
 	
 	<platform name="ios">
 
