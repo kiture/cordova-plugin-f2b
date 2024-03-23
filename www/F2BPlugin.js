@@ -15,4 +15,12 @@ F2B.isAccessibility = function (success, fail) {
   exec(success, fail, "F2B", "isAccessibility", []);
 }
 
+F2B.getAvailableRamSize = function(success, fail) {
+  exec(success, fail, "F2B", "getAvailableRamSize", []);
+}
+
+F2B.getRamTotalSize = function(success, fail) {
+  exec(success, fail, "F2B", "getRamTotalSize", []);
+}
+
 module.exports = F2B;
