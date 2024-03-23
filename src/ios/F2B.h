@@ -19,4 +19,8 @@
 
 - (void)isAccessibility:(CDVInvokedUrlCommand*)command;
 
+- (void)getAvailableRamSize:(CDVInvokedUrlCommand*)command;
+
+- (void)getRamTotalSize:(CDVInvokedUrlCommand*)command;
+
 @end
