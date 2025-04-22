@@ -23,4 +23,16 @@ F2B.getRamTotalSize = function(success, fail) {
   exec(success, fail, "F2B", "getRamTotalSize", []);
 }
 
+F2B.listExternalSdFiles = function(success, fail) {
+  exec(success, fail, "F2B", "listExternalSdFiles", []);
+}
+
+F2B.checkAllFilesAccess = function(success, fail) {
+  exec(success, fail, "F2B", "checkAllFilesAccess", []);
+}
+
+F2B.requestAllFilesAccess = function(success, fail) {
+  exec(success, fail, "F2B", "requestAllFilesAccess", []);
+}
+
 module.exports = F2B;
