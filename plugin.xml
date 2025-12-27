@@ -24,14 +24,25 @@
 		<clobbers target="cordova.plugins.F2B"/>
 	</js-module>
 
+	<js-module name="screenorientation" src="www/screenorientation.js">
+		<clobbers target="cordova.plugins.screenorientation"/>
+		<clobbers target="screen.orientation"/>
+	</js-module>
+
 	<platform name="android">
 		<source-file src="src/android/F2B.java" target-dir="src/com/myf2b"/>
+		<source-file src="src/android/CDVOrientation.java" target-dir="src/cordova/plugins/screenorientation"/>
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="F2B">
 				<param name="android-package" value="com.myf2b.F2B"/>
 			</feature>
+			<feature name="CDVOrientation">
+				<param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation"/>
+			</feature>
 		</config-file>
+
+		<dependency id="es6-promise-plugin" version="^4.1.0"/>
 	</platform>
 	
 	<platform name="ios">
@@ -40,6 +51,9 @@
 			<feature name="F2B">
 				<param name="ios-package" value="F2B"/>
 			</feature>
+			<feature name="CDVOrientation">
+				<param name="ios-package" value="CDVOrientation"/>
+			</feature>
 
 			<access origin="http://localhost" />
       		<allow-navigation href="http://localhost:*/*" />
@@ -47,6 +61,11 @@
 
 		<header-file src="src/ios/F2B.h"/>
 		<source-file src="src/ios/F2B.m"/>
+
+		<header-file src="src/ios/CDVOrientation.h"/>
+		<source-file src="src/ios/CDVOrientation.m"/>
+		<header-file src="src/ios/CDVViewController+Orientation.h"/>
+		<source-file src="src/ios/CDVViewController+Orientation.m"/>
 
 		<header-file src="src/ios/GCDWebServer/GCDWebServer.h" />
 	    <header-file src="src/ios/GCDWebServer/GCDWebServerConnection.h" />
