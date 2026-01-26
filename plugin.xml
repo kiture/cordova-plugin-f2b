@@ -29,9 +29,16 @@
 		<clobbers target="screen.orientation"/>
 	</js-module>
 
+	<js-module name="inappbrowser" src="www/inappbrowser.js">
+		<clobbers target="cordova.InAppBrowser.open" />
+	</js-module>
+
 	<platform name="android">
 		<source-file src="src/android/F2B.java" target-dir="src/com/myf2b"/>
 		<source-file src="src/android/CDVOrientation.java" target-dir="src/cordova/plugins/screenorientation"/>
+		<source-file src="src/android/InAppBrowser.java" target-dir="src/org/apache/cordova/inappbrowser" />
+		<source-file src="src/android/InAppBrowserDialog.java" target-dir="src/org/apache/cordova/inappbrowser" />
+		<source-file src="src/android/InAppChromeClient.java" target-dir="src/org/apache/cordova/inappbrowser" />
 
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="F2B">
@@ -40,7 +47,24 @@
 			<feature name="CDVOrientation">
 				<param name="android-package" value="cordova.plugins.screenorientation.CDVOrientation"/>
 			</feature>
+			<feature name="InAppBrowser">
+				<param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
+			</feature>
 		</config-file>
+
+		<!-- InAppBrowser drawable resources -->
+		<resource-file src="src/android/res/drawable-hdpi/ic_action_next_item.png" target="res/drawable-hdpi/ic_action_next_item.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_action_next_item.png" target="res/drawable-mdpi/ic_action_next_item.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_action_next_item.png" target="res/drawable-xhdpi/ic_action_next_item.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_action_next_item.png" target="res/drawable-xxhdpi/ic_action_next_item.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_action_previous_item.png" target="res/drawable-hdpi/ic_action_previous_item.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_action_previous_item.png" target="res/drawable-mdpi/ic_action_previous_item.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_action_previous_item.png" target="res/drawable-xhdpi/ic_action_previous_item.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_action_previous_item.png" target="res/drawable-xxhdpi/ic_action_previous_item.png" />
+		<resource-file src="src/android/res/drawable-hdpi/ic_action_remove.png" target="res/drawable-hdpi/ic_action_remove.png" />
+		<resource-file src="src/android/res/drawable-mdpi/ic_action_remove.png" target="res/drawable-mdpi/ic_action_remove.png" />
+		<resource-file src="src/android/res/drawable-xhdpi/ic_action_remove.png" target="res/drawable-xhdpi/ic_action_remove.png" />
+		<resource-file src="src/android/res/drawable-xxhdpi/ic_action_remove.png" target="res/drawable-xxhdpi/ic_action_remove.png" />
 
 		<dependency id="es6-promise-plugin" version="^4.1.0"/>
 	</platform>
@@ -54,6 +78,10 @@
 			<feature name="CDVOrientation">
 				<param name="ios-package" value="CDVOrientation"/>
 			</feature>
+			<feature name="InAppBrowser">
+				<param name="ios-package" value="CDVWKInAppBrowser" />
+				<param name="onload" value="true" />
+			</feature>
 
 			<access origin="http://localhost" />
       		<allow-navigation href="http://localhost:*/*" />
@@ -66,6 +94,16 @@
 		<source-file src="src/ios/CDVOrientation.m"/>
 		<header-file src="src/ios/CDVViewController+Orientation.h"/>
 		<source-file src="src/ios/CDVViewController+Orientation.m"/>
+
+		<!-- InAppBrowser iOS files -->
+		<header-file src="src/ios/CDVInAppBrowserOptions.h" />
+		<source-file src="src/ios/CDVInAppBrowserOptions.m" />
+		<header-file src="src/ios/CDVInAppBrowserNavigationController.h" />
+		<source-file src="src/ios/CDVInAppBrowserNavigationController.m" />
+		<header-file src="src/ios/CDVWKInAppBrowser.h" />
+		<source-file src="src/ios/CDVWKInAppBrowser.m" />
+		<header-file src="src/ios/CDVWKInAppBrowserUIDelegate.h" />
+		<source-file src="src/ios/CDVWKInAppBrowserUIDelegate.m" />
 
 		<header-file src="src/ios/GCDWebServer/GCDWebServer.h" />
 	    <header-file src="src/ios/GCDWebServer/GCDWebServerConnection.h" />
@@ -102,6 +140,7 @@
 	    <framework src="MobileCoreServices.framework" />
 	    <framework src="CFNetwork.framework" />
         <framework src="libz.dylib" />
+	    <framework src="CoreGraphics.framework" />
 
 	</platform>
 </plugin>
