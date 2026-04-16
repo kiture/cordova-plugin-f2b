@@ -141,6 +141,7 @@
 	    <framework src="CFNetwork.framework" />
         <framework src="libz.dylib" />
 	    <framework src="CoreGraphics.framework" />
+	    <framework src="AVFoundation.framework" />
 
 	</platform>
 </plugin>

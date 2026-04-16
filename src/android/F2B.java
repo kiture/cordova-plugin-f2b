@@ -10,14 +10,17 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.view.accessibility.AccessibilityManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import android.os.Build;
 import android.util.Log;
 import android.database.Cursor;
 import android.content.ContentResolver;
@@ -29,6 +32,10 @@ public class F2B extends CordovaPlugin {
 	private static final String TAG = "F2BPlugin";
 	private CallbackContext permissionCallbackContext;
 	private static final int MANAGE_STORAGE_REQUEST_CODE = 199;
+
+	// Audio focus state — kept so restoreAudioSession can abandon the same request
+	private AudioManager.OnAudioFocusChangeListener audioFocusListener;
+	private AudioFocusRequest audioFocusRequest; // API 26+
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -45,6 +52,10 @@ public class F2B extends CordovaPlugin {
 			checkAllFilesAccessPermission(callbackContext);
 		} else if (action.equals("requestAllFilesAccess")) {
 			requestAllFilesAccessPermission(callbackContext);
+		} else if (action.equals("silenceOtherApps")) {
+			silenceOtherApps(callbackContext);
+		} else if (action.equals("restoreAudioSession")) {
+			restoreAudioSession(callbackContext);
 		} else {
 			Log.w(TAG, "Nieznana akcja: " + action);
 			return false;
@@ -250,6 +261,66 @@ public class F2B extends CordovaPlugin {
 		} else {
 			Log.d(TAG, "requestAllFilesAccess: Permission not applicable to API < 30");
 			callbackContext.success(1);
+		}
+	}
+
+	/**
+	 * Requests exclusive audio focus from Android's AudioManager so the OS
+	 * pauses / ducks audio playing in all other applications (e.g. Spotify,
+	 * YouTube Music). Uses the modern AudioFocusRequest API on Android 8+ and
+	 * falls back to the legacy API on older versions.
+	 */
+	private void silenceOtherApps(CallbackContext callbackContext) {
+		try {
+			AudioManager am = (AudioManager) cordova.getActivity().getSystemService(Context.AUDIO_SERVICE);
+
+			audioFocusListener = focusChange -> Log.d(TAG, "Audio focus changed: " + focusChange);
+
+			int result;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				AudioAttributes attrs = new AudioAttributes.Builder()
+						.setUsage(AudioAttributes.USAGE_MEDIA)
+						.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+						.build();
+				audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+						.setAudioAttributes(attrs)
+						.setOnAudioFocusChangeListener(audioFocusListener)
+						.build();
+				result = am.requestAudioFocus(audioFocusRequest);
+			} else {
+				result = am.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+			}
+
+			if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+				callbackContext.success();
+			} else {
+				callbackContext.error("Audio focus request was denied by the system");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "silenceOtherApps error", e);
+			callbackContext.error(e.getMessage());
+		}
+	}
+
+	/**
+	 * Abandons the previously requested audio focus so other applications
+	 * (e.g. Spotify, YouTube Music) can resume their playback.
+	 */
+	private void restoreAudioSession(CallbackContext callbackContext) {
+		try {
+			AudioManager am = (AudioManager) cordova.getActivity().getSystemService(Context.AUDIO_SERVICE);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && audioFocusRequest != null) {
+				am.abandonAudioFocusRequest(audioFocusRequest);
+				audioFocusRequest = null;
+			} else if (audioFocusListener != null) {
+				am.abandonAudioFocus(audioFocusListener);
+			}
+			audioFocusListener = null;
+			callbackContext.success();
+		} catch (Exception e) {
+			Log.e(TAG, "restoreAudioSession error", e);
+			callbackContext.error(e.getMessage());
 		}
 	}
 

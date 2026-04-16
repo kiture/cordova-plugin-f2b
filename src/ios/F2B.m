@@ -7,6 +7,7 @@
 #import <mach/mach.h>
 #import "F2B.h"
 #import <Cordova/CDVPluginResult.h>
+#import <AVFoundation/AVFoundation.h>
 #import "GCDWebServer.h"
 #import "GCDWebServerDataResponse.h"
 
@@ -93,5 +94,48 @@
     });
 }
 
+
+- (void)silenceOtherApps:(CDVInvokedUrlCommand *)command
+{
+    NSError *error = nil;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+
+    // AVAudioSessionCategoryPlayback interrupts other apps' audio (Music,
+    // Spotify, podcasts, etc.) as soon as the session becomes active.
+    // No mixing option is set so the app takes exclusive audio focus.
+    BOOL ok = [session setCategory:AVAudioSessionCategoryPlayback error:&error];
+    if (ok) {
+        ok = [session setActive:YES error:&error];
+    }
+
+    CDVPluginResult *result;
+    if (ok) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        NSString *msg = error ? error.localizedDescription : @"Unknown error";
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
+    }
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
+- (void)restoreAudioSession:(CDVInvokedUrlCommand *)command
+{
+    NSError *error = nil;
+
+    // Deactivate the session and tell other apps they may resume.
+    BOOL ok = [[AVAudioSession sharedInstance]
+               setActive:NO
+               withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation
+               error:&error];
+
+    CDVPluginResult *result;
+    if (ok) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    } else {
+        NSString *msg = error ? error.localizedDescription : @"Unknown error";
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
+    }
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
 
 @end

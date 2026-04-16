@@ -23,6 +23,34 @@ F2B.getRamTotalSize = function(success, fail) {
   exec(success, fail, "F2B", "getRamTotalSize", []);
 }
 
+/**
+ * iOS only.
+ * Activates an exclusive AVAudioSession (AVAudioSessionCategoryPlayback) so
+ * iOS interrupts / silences audio playing in all other applications such as
+ * Music, Spotify or podcasts.
+ *
+ * Call restoreAudioSession() when the app no longer needs exclusive focus so
+ * interrupted apps can resume their playback.
+ *
+ * @param {Function} success - called with no arguments on success
+ * @param {Function} fail    - called with an error message string on failure
+ */
+F2B.silenceOtherApps = function(success, fail) {
+  exec(success, fail, "F2B", "silenceOtherApps", []);
+}
+
+/**
+ * iOS only.
+ * Deactivates the exclusive AVAudioSession and notifies other applications
+ * (e.g. Music, Spotify) that they may resume their playback.
+ *
+ * @param {Function} success - called with no arguments on success
+ * @param {Function} fail    - called with an error message string on failure
+ */
+F2B.restoreAudioSession = function(success, fail) {
+  exec(success, fail, "F2B", "restoreAudioSession", []);
+}
+
 F2B.listExternalSdFiles = function(success, fail) {
   exec(success, fail, "F2B", "listExternalSdFiles", []);
 }

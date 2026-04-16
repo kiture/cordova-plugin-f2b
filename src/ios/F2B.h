@@ -23,4 +23,17 @@
 
 - (void)getRamTotalSize:(CDVInvokedUrlCommand*)command;
 
+/**
+ * Activates an exclusive AVAudioSession so iOS silences / interrupts audio
+ * playing in all other applications. Call restoreAudioSession when the app
+ * no longer needs exclusive audio focus.
+ */
+- (void)silenceOtherApps:(CDVInvokedUrlCommand*)command;
+
+/**
+ * Deactivates the exclusive AVAudioSession and notifies other applications
+ * (e.g. Music, Spotify) that they may resume playback.
+ */
+- (void)restoreAudioSession:(CDVInvokedUrlCommand*)command;
+
 @end
